@@ -1,0 +1,2 @@
+RMSE,MAE,R2,MAPE,Best Parameters
+3.7902,3.0595,0.8357,13.0865,"{'model__subsample': 0.8, 'model__reg_lambda': 2, 'model__reg_alpha': 0.5, 'model__num_leaves': 63, 'model__n_estimators': 500, 'model__max_depth': 10, 'model__learning_rate': 0.03}"

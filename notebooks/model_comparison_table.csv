@@ -1,0 +1,9 @@
+Model,Dataset,RMSE,MAE,R2,MAPE
+LightGBM,Dataset_A,3.7811,3.0549,0.8365,13.0938
+Random Forest,Dataset_A,3.8539,3.0862,0.8302,13.2196
+XGBoost,Dataset_A,3.8912,3.1262,0.8269,13.3447
+LightGBM,Dataset_B,4.0765,3.2256,0.8111,13.8855
+Random Forest,Dataset_B,4.116,3.2408,0.8074,13.9981
+XGBoost,Dataset_B,4.1244,3.2619,0.8066,14.0206
+Gradient Boosting,Dataset_A,4.3998,3.5374,0.7787,15.3067
+Gradient Boosting,Dataset_B,4.6914,3.7152,0.7498,16.1634

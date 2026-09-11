@@ -1,0 +1,22 @@
+# Python cache & temporary files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Environments & Keys
+.env
+.venv/
+venv/
+ENV/
+env/
+
+# Logs & monitoring
+backend/logs/*.jsonl
+*.log
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+desktop.ini

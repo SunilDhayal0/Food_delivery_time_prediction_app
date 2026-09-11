@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DeliveryTime-X | Real-Time Food Delivery Estimation System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- Leaflet Map CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">DeliveryTime-<span>X</span></span>
+      </div>
+      <div class="nav-badge">
+        <span class="status-dot"></span>
+        <span id="backend-status">Checking ML Server...</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-content">
+    <div class="hero-section">
+      <h1>Real-Time Food Delivery Estimation</h1>
+      <p>Powered by a Stacking Ensemble Machine Learning model with live weather, OSRM road traffic, and reverse-geocoding.</p>
+    </div>
+
+    <!-- Quick Presets for 1-Click Testing -->
+    <div class="preset-bar">
+      <span class="preset-label">Quick Test Presets:</span>
+      <button type="button" class="btn-preset" data-from="Koramangala 4th Block, Bengaluru" data-to="Indiranagar 100ft Road, Bengaluru" data-vehicle="motorcycle" data-order="Meal">📍 Bengaluru (4.5 km)</button>
+      <button type="button" class="btn-preset" data-from="Bandra West, Mumbai" data-to="Andheri East, Mumbai" data-vehicle="scooter" data-order="Snack">📍 Mumbai (8.2 km)</button>
+      <button type="button" class="btn-preset" data-from="Connaught Place, New Delhi" data-to="Karol Bagh, New Delhi" data-vehicle="motorcycle" data-order="Drinks">📍 Delhi (3.8 km)</button>
+    </div>
+
+    <div class="grid-layout">
+      <!-- Left Column: Input Form (Strictly the 6 user fields) -->
+      <section class="card form-card">
+        <div class="card-header">
+          <h2>Order & Route Details</h2>
+          <span class="card-subtitle">Fill in the 6 fields — all other features are auto-derived live</span>
+        </div>
+
+        <form id="prediction-form">
+          <!-- Field 1: From Address -->
+          <div class="form-group">
+            <label for="from-address">
+              <span class="field-num">1</span> Pickup Location ("From" Restaurant)
+            </label>
+            <div class="autocomplete-wrapper">
+              <input type="text" id="from-address" name="from_address" placeholder="e.g. Koramangala, Bengaluru" required autocomplete="off" />
+              <div id="from-suggestions" class="suggestions-box hidden"></div>
+            </div>
+          </div>
+
+          <!-- Field 2: To Address -->
+          <div class="form-group">
+            <label for="to-address">
+              <span class="field-num">2</span> Drop Location ("To" Customer)
+            </label>
+            <div class="autocomplete-wrapper">
+              <input type="text" id="to-address" name="to_address" placeholder="e.g. Indiranagar, Bengaluru" required autocomplete="off" />
+              <div id="to-suggestions" class="suggestions-box hidden"></div>
+            </div>
+          </div>
+
+          <!-- Hidden inputs for coordinates if selected via autocomplete/map -->
+          <input type="hidden" id="pickup-lat" name="pickup_lat" />
+          <input type="hidden" id="pickup-lon" name="pickup_lon" />
+          <input type="hidden" id="drop-lat" name="drop_lat" />
+          <input type="hidden" id="drop-lon" name="drop_lon" />
+
+          <div class="form-row">
+            <!-- Field 3: Vehicle Type -->
+            <div class="form-group col-half">
+              <label for="vehicle-type">
+                <span class="field-num">3</span> Vehicle Type
+              </label>
+              <select id="vehicle-type" name="vehicle_type" required>
+                <option value="motorcycle" selected>🏍️ Motorcycle</option>
+                <option value="scooter">🛵 Scooter</option>
+                <option value="electric_scooter">⚡ Electric Scooter</option>
+                <option value="bicycle">🚲 Bicycle</option>
+              </select>
+            </div>
+
+            <!-- Field 4: Vehicle Condition -->
+            <div class="form-group col-half">
+              <label for="vehicle-condition">
+                <span class="field-num">4</span> Vehicle Condition
+              </label>
+              <select id="vehicle-condition" name="vehicle_condition" required>
+                <option value="0">0 — Poor (Frequent repairs)</option>
+                <option value="1" selected>1 — Fair (Standard)</option>
+                <option value="2">2 — Good (Well maintained)</option>
+                <option value="3">3 — Excellent (New condition)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <!-- Field 5: Type of Order -->
+            <div class="form-group col-half">
+              <label for="type-of-order">
+                <span class="field-num">5</span> Type of Order
+              </label>
+              <select id="type-of-order" name="type_of_order" required>
+                <option value="Snack">🥪 Snack</option>
+                <option value="Meal" selected>🍛 Meal</option>
+                <option value="Drinks">🥤 Drinks</option>
+                <option value="Buffet">🍱 Buffet</option>
+              </select>
+            </div>
+
+            <!-- Field 6: Number of Deliveries -->
+            <div class="form-group col-half">
+              <label for="multiple-deliveries">
+                <span class="field-num">6</span> Concurrent Deliveries
+              </label>
+              <select id="multiple-deliveries" name="multiple_deliveries" required>
+                <option value="0">0 (Solo first order)</option>
+                <option value="1" selected>1 (Standard single batch)</option>
+                <option value="2">2 (Carrying 2 orders)</option>
+                <option value="3">3 (Heavy multi-batch)</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" id="btn-submit" class="btn-primary">
+            <span class="btn-text">Predict Delivery Time</span>
+            <span class="spinner hidden"></span>
+          </button>
+        </form>
+      </section>
+
+      <!-- Right Column: Results & Interactive Map -->
+      <section class="result-column">
+        <!-- Error Alert -->
+        <div id="error-alert" class="alert alert-error hidden">
+          <span class="alert-icon">⚠️</span>
+          <div class="alert-content">
+            <h4 id="error-title">Prediction Error</h4>
+            <p id="error-msg">Something went wrong. Please check your addresses and try again.</p>
+          </div>
+        </div>
+
+        <!-- Result Card -->
+        <div id="result-card" class="card result-card hidden">
+          <div class="prediction-header">
+            <div>
+              <span class="pred-label">Estimated Delivery Time</span>
+              <div class="pred-value">
+                <span id="pred-minutes">--</span>
+                <span class="pred-unit">mins</span>
+              </div>
+            </div>
+            <div class="pred-badge" id="traffic-badge">
+              <span id="traffic-badge-text">Normal Flow</span>
+            </div>
+          </div>
+
+          <!-- Fallback Alert Box (Shown if any live API degraded) -->
+          <div id="fallback-notification" class="fallback-box hidden">
+            <span class="fallback-icon">ℹ️</span>
+            <span id="fallback-text">Note: Real-time weather fallback used.</span>
+          </div>
+
+          <!-- Feature Breakdown Grid -->
+          <div class="breakdown-grid">
+            <div class="breakdown-item">
+              <div class="b-icon">🌤️</div>
+              <div class="b-info">
+                <span class="b-label">Live Weather</span>
+                <span class="b-val" id="b-weather">--</span>
+              </div>
+            </div>
+
+            <div class="breakdown-item">
+              <div class="b-icon">🚦</div>
+              <div class="b-info">
+                <span class="b-label">Traffic Density</span>
+                <span class="b-val" id="b-traffic">--</span>
+              </div>
+            </div>
+
+            <div class="breakdown-item">
+              <div class="b-icon">📏</div>
+              <div class="b-info">
+                <span class="b-label">Route Distance</span>
+                <span class="b-val" id="b-distance">-- km</span>
+              </div>
+            </div>
+
+            <div class="breakdown-item">
+              <div class="b-icon">🏙️</div>
+              <div class="b-info">
+                <span class="b-label">City Zone</span>
+                <span class="b-val" id="b-city">--</span>
+              </div>
+            </div>
+
+            <div class="breakdown-item">
+              <div class="b-icon">🎉</div>
+              <div class="b-info">
+                <span class="b-label">Festival Impact</span>
+                <span class="b-val" id="b-festival">No</span>
+              </div>
+            </div>
+
+            <div class="breakdown-item">
+              <div class="b-icon">🧑‍🍳</div>
+              <div class="b-info">
+                <span class="b-label">Rider Profile</span>
+                <span class="b-val">Age: 30 | Rating: 4.7★</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Leaflet Route Map -->
+          <div class="map-container">
+            <div id="route-map"></div>
+          </div>
+        </div>
+
+        <!-- Initial Placeholder State -->
+        <div id="placeholder-card" class="card placeholder-card">
+          <div class="placeholder-icon">📍</div>
+          <h3>Ready to Calculate</h3>
+          <p>Provide the restaurant and customer locations on the left or select a quick preset to see the ML model prediction with live derived factors.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Powered by FastAPI & Stacking Ensemble Regressor (LightGBM + Random Forest). OpenStreetMap & OSRM integration.</p>
+  </footer>
+
+  <!-- Leaflet Map JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="app.js"></script>
+</body>
+</html>

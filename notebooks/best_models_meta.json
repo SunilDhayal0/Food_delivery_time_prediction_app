@@ -1,0 +1,14 @@
+{
+  "best_model_1": {
+    "name": "LightGBM",
+    "dataset": "Dataset_A",
+    "rmse": 3.7811,
+    "r2": 0.8365
+  },
+  "best_model_2": {
+    "name": "Random Forest",
+    "dataset": "Dataset_A",
+    "rmse": 3.8539,
+    "r2": 0.8302
+  }
+}
