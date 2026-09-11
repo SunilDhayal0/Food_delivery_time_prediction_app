@@ -2,12 +2,12 @@
 
 [![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![Gradio](https://img.shields.io/badge/Gradio-Live_Demo-orange?logo=gradio&logoColor=white)](https://huggingface.co/spaces/SunilDhayal0/deliverytime-x)
-[![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Live_Demo-yellow)](https://huggingface.co/spaces/SunilDhayal0/deliverytime-x)
+[![Render](https://img.shields.io/badge/Render-Deploy%20Live-46E3B7?logo=render&logoColor=white)](https://render.com/deploy?repo=https://github.com/SunilDhayal0/Food_delivery_time_prediction_app)
 [![Leaflet](https://img.shields.io/badge/Leaflet-Interactive_Maps-199900?logo=leaflet&logoColor=white)](https://leafletjs.com/)
 
-> 🔗 **Public Live Web Demo**: **[https://huggingface.co/spaces/SunilDhayal0/deliverytime-x](https://huggingface.co/spaces/SunilDhayal0/deliverytime-x)**  
-> *(Test the live ML prediction in your browser with zero setup!)*
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/SunilDhayal0/Food_delivery_time_prediction_app)
+
+> 🚀 **1-Click Live Cloud Demo**: Click the **"Deploy to Render"** button above to launch your free live public instance in 1 click!
 
 **DeliveryTime-X** is an end-to-end, production-grade Machine Learning system and full-stack web application designed to predict food delivery durations in real time. 
 
