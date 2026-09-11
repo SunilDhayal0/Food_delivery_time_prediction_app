@@ -2,9 +2,12 @@
 
 [![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-1.5+-F7931E?logo=scikitlearn&logoColor=white)](https://scikit-learn.org/)
-[![LightGBM](https://img.shields.io/badge/LightGBM-Stacking_Ensemble-brightgreen)](https://lightgbm.readthedocs.io/)
+[![Gradio](https://img.shields.io/badge/Gradio-Live_Demo-orange?logo=gradio&logoColor=white)](https://huggingface.co/spaces/SunilDhayal0/deliverytime-x)
+[![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Live_Demo-yellow)](https://huggingface.co/spaces/SunilDhayal0/deliverytime-x)
 [![Leaflet](https://img.shields.io/badge/Leaflet-Interactive_Maps-199900?logo=leaflet&logoColor=white)](https://leafletjs.com/)
+
+> 🔗 **Public Live Web Demo**: **[https://huggingface.co/spaces/SunilDhayal0/deliverytime-x](https://huggingface.co/spaces/SunilDhayal0/deliverytime-x)**  
+> *(Test the live ML prediction in your browser with zero setup!)*
 
 **DeliveryTime-X** is an end-to-end, production-grade Machine Learning system and full-stack web application designed to predict food delivery durations in real time. 
 
@@ -197,6 +200,10 @@ D:\testing\
 ---
 
 ## 🚀 Interactive Live Demo
+
+> 🌐 **Click here to try the Live Cloud Web App**:  
+> 👉 **[https://huggingface.co/spaces/SunilDhayal0/deliverytime-x](https://huggingface.co/spaces/SunilDhayal0/deliverytime-x)**  
+> *(Hosted 24/7 on Hugging Face Spaces — enter any pickup/drop location to see the real-time ML prediction!)*
 
 ### 1. Preset 1-Click Scenarios
 The frontend provides one-click preset buttons for immediate testing:
