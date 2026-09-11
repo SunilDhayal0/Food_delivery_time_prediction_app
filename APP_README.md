@@ -239,21 +239,32 @@ OPENWEATHER_API_KEY=your_free_openweather_key_here
 ```
 *(If no key is provided, the backend seamlessly activates its climate-and-hour fallback engine).*
 
-### Step 4: Launch Backend Server
+### Step 4: Launch Backend Server (Direct Web App Serving)
 ```powershell
-uvicorn main:app --host 127.0.0.1 --port 8000 --reload
+uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload
 ```
-The server will start on `http://127.0.0.1:8000`.
+The application will start on `http://127.0.0.1:8000`.
+- **Full Interactive Web App**: `http://127.0.0.1:8000/`
 - **Health Check**: `http://127.0.0.1:8000/health`
 - **Interactive Swagger Documentation**: `http://127.0.0.1:8000/docs`
 
-### Step 5: Launch Frontend
-Open `D:\testing\frontend\index.html` directly in your browser, or start a local static server:
-```powershell
-cd D:\testing\frontend
-python -m http.server 3000
-```
-Then visit `http://localhost:3000` in your browser.
+---
+
+## 🌐 1-Click Cloud Live Demo Deployment (Hugging Face Spaces)
+
+You can host **DeliveryTime-X** live on the web for free using **Hugging Face Spaces** (Docker SDK):
+
+1. Go to [Hugging Face Spaces](https://huggingface.co/spaces) and click **"Create new Space"**.
+2. Set Space Name: `deliverytime-x`
+3. Select **Space SDK**: **Docker** $\rightarrow$ **Blank**.
+4. Set Space Hardware: **Free (2 vCPU, 16 GB RAM)**.
+5. In your local terminal, link your repository and push to Hugging Face:
+   ```bash
+   git remote add hf https://huggingface.co/spaces/<YOUR_USERNAME>/deliverytime-x
+   git push hf main
+   ```
+   *(Or click "Import from GitHub" and paste `https://github.com/SunilDhayal0/Food_delivery_time_prediction_app`)*
+6. Hugging Face will automatically build the included [Dockerfile](file:///D:/testing/Dockerfile) and launch your live public web app URL (e.g. `https://<YOUR_USERNAME>-deliverytime-x.hf.space`)!
 
 ---
 

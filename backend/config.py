@@ -23,8 +23,10 @@ if ENV_PATH.is_file():
     except Exception:
         pass
 
-# Path to delivery_time_predictor.pkl in notebooks/ (loaded by reference, read-only)
-DEFAULT_MODEL_PATH = str(BASE_DIR / "notebooks" / "delivery_time_predictor.pkl")
+# Path to delivery_time_predictor.pkl (loaded by reference, read-only)
+_nb_model = BASE_DIR / "notebooks" / "delivery_time_predictor.pkl"
+_root_model = BASE_DIR / "delivery_time_predictor.pkl"
+DEFAULT_MODEL_PATH = str(_nb_model if _nb_model.is_file() else _root_model)
 MODEL_PATH = os.getenv("MODEL_PATH", DEFAULT_MODEL_PATH)
 
 # OpenWeatherMap API Key (Free tier)

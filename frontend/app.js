@@ -1,8 +1,11 @@
 /**
- * SwiftDrop Delivery Time Predictor - Frontend Client Logic
+ * DeliveryTime-X - Frontend Client Logic
  */
 
-const API_BASE_URL = 'http://127.0.0.1:8000';
+// If running standalone or on the web server, use relative path or current host
+const API_BASE_URL = window.location.port === '8000' || window.location.protocol.startsWith('http') && window.location.pathname.startsWith('/')
+  ? window.location.origin
+  : 'http://127.0.0.1:8000';
 
 // Global state
 let map = null;

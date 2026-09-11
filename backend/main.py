@@ -9,12 +9,15 @@ Endpoints:
 """
 
 import json, time, logging
+from pathlib import Path
 from datetime import datetime
 from typing import Optional, Dict, Any, List
 
 import httpx
 from fastapi import FastAPI, HTTPException, Request, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
 from config import (
@@ -166,3 +169,30 @@ async def autocomplete(q: str = Query(..., min_length=2)):
         logger.warning(f"Autocomplete proxy failed: {e}")
 
     return []
+
+
+# Mount frontend static files
+FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
+if FRONTEND_DIR.is_dir():
+    app.mount("/static", StaticFiles(directory=str(FRONTEND_DIR)), name="static")
+
+    @app.get("/")
+    async def serve_index():
+        index_file = FRONTEND_DIR / "index.html"
+        if index_file.is_file():
+            return FileResponse(str(index_file))
+        return {"message": "DeliveryTime-X API running."}
+
+    @app.get("/{filename}.css")
+    async def serve_css(filename: str):
+        css_file = FRONTEND_DIR / f"{filename}.css"
+        if css_file.is_file():
+            return FileResponse(str(css_file), media_type="text/css")
+        raise HTTPException(status_code=404)
+
+    @app.get("/{filename}.js")
+    async def serve_js(filename: str):
+        js_file = FRONTEND_DIR / f"{filename}.js"
+        if js_file.is_file():
+            return FileResponse(str(js_file), media_type="application/javascript")
+        raise HTTPException(status_code=404)
