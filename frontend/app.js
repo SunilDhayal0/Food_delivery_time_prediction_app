@@ -2,10 +2,11 @@
  * DeliveryTime-X - Frontend Client Logic
  */
 
-// If running standalone or on the web server, use relative path or current host
-const API_BASE_URL = window.location.port === '8000' || window.location.protocol.startsWith('http') && window.location.pathname.startsWith('/')
-  ? window.location.origin
-  : 'http://127.0.0.1:8000';
+// Use the backend origin when the static frontend runs separately.
+const isLocalFrontend = ['127.0.0.1', 'localhost'].includes(window.location.hostname);
+const API_BASE_URL = isLocalFrontend && window.location.port !== '8010'
+  ? 'http://127.0.0.1:8010'
+  : window.location.origin;
 
 // Global state
 let map = null;
